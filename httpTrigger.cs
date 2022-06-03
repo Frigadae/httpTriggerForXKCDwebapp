@@ -19,25 +19,30 @@ namespace backend.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
+            //create new http object
             HttpClient client = new HttpClient(); 
             log.LogInformation("C# HTTP trigger function received a request.");
 
-            //extract url from HTTP request
-            string url = req.Query["url"];
-            
-            //blank string
-            string response = "";
+            //extract number from HTTP request query
+            string num = req.Query["number"];
 
-            //if there is no URL, return a string
-            if (url == null) {
-                response = "Backend. Please add a url query. Eg. /api/httpTrigger?url=https://xkcd.com/info.0.json";
-            } else {
-                response = await client.GetStringAsync(url);
+            //if no number is given, return an error
+            if (num == null) {
+                string response = "{'error':'no number given'}";
+                return new OkObjectResult(requestLatest);
             }
 
-            //checks response on console
-            //Console.WriteLine(response);
+            //initalise request url
+            string requestComic = "";
 
+            //if number is 0, return the latest comic
+            //otherwise, return the specified comic
+            if (Int32.Parse(num) == 0) {
+                const string requestComic = "https://xkcd.com/info.0.json";
+            } else {
+                const string requestComic = $"https://xkcd.com/{num}/info.0.json";
+            }
+            string response = await client.GetStringAsync(requestComic);
             return new OkObjectResult(response);
         }
     }
