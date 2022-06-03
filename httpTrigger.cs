@@ -32,17 +32,18 @@ namespace backend.Function
                 return new OkObjectResult(requestLatest);
             }
 
+            //initalise request url
+            string requestComic = "";
+
             //if number is 0, return the latest comic
             //otherwise, return the specified comic
             if (Int32.Parse(num) == 0) {
-                const string requestLatest = "https://xkcd.com/info.0.json";
-                string response = await client.GetStringAsync(requestLatest);
-                return new OkObjectResult(requestLatest);
+                const string requestComic = "https://xkcd.com/info.0.json";
             } else {
-                const string requestNum = $"https://xkcd.com/{num}/info.0.json";
-                string response = await client.GetStringAsync(requestNum);
-                return new OkObjectResult(response);
+                const string requestComic = $"https://xkcd.com/{num}/info.0.json";
             }
+            string response = await client.GetStringAsync(requestComic);
+            return new OkObjectResult(response);
         }
     }
 }
