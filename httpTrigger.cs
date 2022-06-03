@@ -28,7 +28,7 @@ namespace backend.Function
 
             //if no number is given, return an error
             if (num == null) {
-                string noNumResponse = "{error:\"no number given\"}";
+                string noNumResponse = "{\"error\":\"no number given\"}";
                 return new OkObjectResult(noNumResponse);
             }
 
