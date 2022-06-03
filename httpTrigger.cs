@@ -24,12 +24,12 @@ namespace backend.Function
             log.LogInformation("C# HTTP trigger function received a request.");
 
             //extract number from HTTP request query
-            string num = req.Query["number"];
+            string num = req.Query["num"];
 
             //if no number is given, return an error
             if (num == null) {
-                string response = "{'error':'no number given'}";
-                return new OkObjectResult(requestLatest);
+                string noNumResponse = "{error:\"no number given\"}";
+                return new OkObjectResult(noNumResponse);
             }
 
             //initalise request url
@@ -38,9 +38,9 @@ namespace backend.Function
             //if number is 0, return the latest comic
             //otherwise, return the specified comic
             if (Int32.Parse(num) == 0) {
-                const string requestComic = "https://xkcd.com/info.0.json";
+                requestComic = "https://xkcd.com/info.0.json";
             } else {
-                const string requestComic = $"https://xkcd.com/{num}/info.0.json";
+                requestComic = $"https://xkcd.com/{num}/info.0.json";
             }
             string response = await client.GetStringAsync(requestComic);
             return new OkObjectResult(response);
